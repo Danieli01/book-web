@@ -2,6 +2,7 @@ import { useState } from "react";
 import CreateBook from "./components/CreateBook";
 import BooksList from "./views/BooksList";
 import Modal from "./components/Modal";
+import "./index.css";
 
 function App() {
   const [openModal, setOpenModal] = useState(false);
@@ -12,7 +13,6 @@ function App() {
       <div className="header-section">
         <div className="title-section">
           <h1>Livros</h1>
-
           <h3
             style={{ cursor: "pointer" }}
             onClick={() => setOpenModal(true)}

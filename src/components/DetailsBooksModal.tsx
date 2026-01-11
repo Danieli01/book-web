@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Book } from "../services/listBoooksService";
 import CreateBook from "./CreateBook";
 import Modal from "./Modal";
+import "../styles/modal.css";
 
 
 interface Props {
@@ -26,55 +27,60 @@ export default function DetailsBooksModal({
 
   return (
     <Modal open={open} onClose={onClose}>
-      {!isEditing ? (
-        <>
-          <h2>{book.title}</h2>
-          <h4>{book.author_name}</h4>
-          <small>
-            {new Date(book.published_date).toLocaleDateString()}
-          </small>
+      <div className="details-modal">
+        {!isEditing ? (
+          <>
+            <h2>{book.title}</h2>
+            <h4>{book.author_name}</h4>
+            <small>
+              {new Date(book.published_date).toLocaleDateString()}
+            </small>
 
-          {book.image_url && (
-            <img
-              src={book.image_url}
-              alt={book.title}
-              style={{ width: "100%", marginTop: 16 }}
-            />
-          )}
+            {book.image_url && (
+              <img
+                src={book.image_url}
+                alt={book.title}
+                style={{ width: "100%", marginTop: 16 }}
+              />
+            )}
 
-          <p>{book.description}</p>
+            <p>{book.description}</p>
 
-          <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
-            <button onClick={() => setIsEditing(true)}>Editar</button>
-            <button onClick={() => setConfirmDelete(true)}>Excluir</button>
-            <button onClick={onClose}>Cancelar</button>
-          </div>
-        </>
-      ) : (
-        <CreateBook
-          mode="edit"
-          initialData={book}
-          onCancel={() => setIsEditing(false)}
-          onSuccess={() => {
-            setIsEditing(false);
-            onUpdated();
-            onClose();
-          }}
-        />
-      )}
+            <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
+              <button onClick={() => setIsEditing(true)} style={{ border: "none", background: "none", cursor: "pointer" }}>Editar</button>
+              <button onClick={() => setConfirmDelete(true)} style={{ border: "none", background: "none", cursor: "pointer" }}>Excluir</button>
+              <div style={{ backgroundColor: 'white', padding: '4px', borderRadius: '4px', display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontWeight: "bold", fontSize: 20, alignSelf: "center", marginLeft: 8 }}>&lt;</span>
+                <button onClick={onClose} style={{ border: "none", background: "none", cursor: "pointer" }}>Voltar</button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <CreateBook
+            mode="edit"
+            initialData={book}
+            onCancel={() => setIsEditing(false)}
+            onSuccess={() => {
+              setIsEditing(false);
+              onUpdated();
+              onClose();
+            }}
+          />
+        )}
 
-      {confirmDelete && (
-        <Modal open onClose={() => setConfirmDelete(false)}>
-          <h3>Confirmar exclusão</h3>
-          <p>Deseja realmente excluir este livro?</p>
-          <div style={{ display: "flex", gap: 12 }}>
-            <button onClick={onDeleted}>Confirmar</button>
-            <button onClick={() => setConfirmDelete(false)}>
-              Cancelar
-            </button>
-          </div>
-        </Modal>
-      )}
+        {confirmDelete && (
+          <Modal open onClose={() => setConfirmDelete(false)} >
+            <h3>Tem certeza?</h3>
+            <p>Ao excluir este livro não será possível recuperá-lo. Realmente deseja excluí-lo?</p>
+            <div style={{ display: "flex", gap: 12 }}>
+              <button onClick={onDeleted}>Excluir</button>
+              <button onClick={() => setConfirmDelete(false)}>
+                Cancelar
+              </button>
+            </div>
+          </Modal>
+        )}
+      </div>
     </Modal>
   );
 }

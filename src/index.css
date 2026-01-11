@@ -3,6 +3,7 @@
 ========================= */
 html {
   display: flex;
+  justify-content: center;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -13,20 +14,18 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  display: block; /* Corrigido para não sobrescrever o flex do .page-container */
   box-sizing: border-box;
   background-color: #F0F0F0;
   font-family: Arial, sans-serif;
-  padding: 64px 64px;
-  gap: 64px
 }
 
 /* Container principal da página */
 .page-container {
   width: 100%;
-  max-width: 1440px;
-  min-height: 1024px;
-  margin: 0 auto;
+  /* max-width: 1440px;
+  min-height: 1024px; */
+  
   /* centraliza horizontalmente */
   padding: 64px 64px;
   /* padding top/bottom e laterais */
@@ -46,19 +45,14 @@ body {
 
 .header-section {
   width: 100%;
-  max-width: 1440px;
+  /* max-width: 1224px; */
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  box-sizing: border-box;
-  margin-bottom: 32px;
   margin: 0 auto;
-  /* centraliza horizontalmente */
-  padding: 64px 64px;
-  gap: 64px
+  padding: 32px 64px;
 }
 
 .title-section {
