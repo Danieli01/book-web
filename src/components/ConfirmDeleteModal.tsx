@@ -1,3 +1,4 @@
+import Modal from "./Modal";
 
 interface ConfirmDeleteProps {
   onConfirm: () => void;
