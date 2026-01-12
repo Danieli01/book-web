@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import type { Book } from "../services/listBooksService";
-import { createBook, uploadBookImage } from "../services/createBooksService";
-import { updateBook } from "../services/editBookService";
-import styles from "../styles/createBook.module.css";
+import { useEffect, useState } from "react"
+import type { Book } from "../services/listBooksService"
+import { createBook, uploadBookImage } from "../services/createBooksService"
+import { updateBook } from "../services/editBookService"
+import styles from "../styles/createBook.module.css"
 
 interface Props {
-  mode?: "create" | "edit";
-  initialData?: Book;
-  onSuccess?: () => void;
-  onCancel?: () => void;
-  noOverlay?: boolean; // ← chave para desativar overlay interno
+  mode?: "create" | "edit"
+  initialData?: Book
+  onSuccess?: () => void
+  onCancel?: () => void
+  noOverlay?: boolean // ← chave para desativar overlay interno
 }
 
 export default function CreateBook({
@@ -19,41 +19,41 @@ export default function CreateBook({
   onCancel,
   noOverlay = false,
 }: Props) {
-  const isEdit = mode === "edit";
-  const titleText = isEdit ? "Editar livro" : "Novo livro";
+  const isEdit = mode === "edit"
+  const titleText = isEdit ? "Editar livro" : "Novo livro"
 
-  const [title, setTitle] = useState("");
-  const [authorName, setAuthorName] = useState("");
-  const [publishedDate, setPublishedDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | undefined>();
+  const [title, setTitle] = useState("")
+  const [authorName, setAuthorName] = useState("")
+  const [publishedDate, setPublishedDate] = useState("")
+  const [description, setDescription] = useState("")
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | undefined>()
 
   useEffect(() => {
     if (isEdit && initialData) {
-      setTitle(initialData.title);
-      setAuthorName(initialData.author_name);
-      setPublishedDate(initialData.published_date?.slice(0, 10) ?? "");
-      setDescription(initialData.description ?? "");
-      setImagePreview(initialData.image_url);
+      setTitle(initialData.title)
+      setAuthorName(initialData.author_name)
+      setPublishedDate(initialData.published_date?.slice(0, 10) ?? "")
+      setDescription(initialData.description ?? "")
+      setImagePreview(initialData.image_url)
     }
-  }, [isEdit, initialData]);
+  }, [isEdit, initialData])
 
   useEffect(() => {
     if (imageFile) {
-      const objectUrl = URL.createObjectURL(imageFile);
-      setImagePreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
+      const objectUrl = URL.createObjectURL(imageFile)
+      setImagePreview(objectUrl)
+      return () => URL.revokeObjectURL(objectUrl)
     }
-  }, [imageFile]);
+  }, [imageFile])
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      let finalImageUrl = imagePreview;
+      let finalImageUrl = imagePreview
 
       if (imageFile) {
-        finalImageUrl = await uploadBookImage(imageFile);
+        finalImageUrl = await uploadBookImage(imageFile)
       }
 
       const payload = {
@@ -62,18 +62,18 @@ export default function CreateBook({
         published_date: publishedDate ? new Date(publishedDate).toISOString() : undefined,
         description,
         image_url: finalImageUrl,
-      };
-
-      if (isEdit && initialData?.id !== undefined) {
-        await updateBook(initialData.id, payload);
-      } else {
-        await createBook(payload);
       }
 
-      onSuccess?.();
+      if (isEdit && initialData?.id !== undefined) {
+        await updateBook(initialData.id, payload)
+      } else {
+        await createBook(payload)
+      }
+
+      onSuccess?.()
     } catch (err) {
-      console.error("Erro ao salvar livro:", err);
-      alert("Erro ao salvar o livro. Verifique os dados e tente novamente.");
+      console.error("Erro ao salvar livro:", err)
+      alert("Erro ao salvar o livro. Verifique os dados e tente novamente.")
     }
   }
 
@@ -149,8 +149,8 @@ export default function CreateBook({
               type="file"
               accept="image/*"
               onChange={(e) => {
-                const target = e.target as HTMLInputElement;
-                setImageFile(target.files && target.files[0] ? target.files[0] : null);
+                const target = e.target as HTMLInputElement
+                setImageFile(target.files && target.files[0] ? target.files[0] : null)
               }}
               className={styles.fileInput}
             />
@@ -167,9 +167,9 @@ export default function CreateBook({
         </button>
       </div>
     </form>
-  );
+  )
 
   // Se noOverlay=true → renderiza só o card (usado dentro de outro Modal)
   // Se false → renderiza com overlay próprio (para uso standalone)
-  return noOverlay ? formContent : <div className={styles.overlay}>{formContent}</div>;
+  return noOverlay ? formContent : <div className={styles.overlay}>{formContent}</div>
 }

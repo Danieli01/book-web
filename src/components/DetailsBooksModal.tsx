@@ -1,17 +1,17 @@
 // DetailsBooksModal.tsx - Versão definitiva com integração de delete e tratamento de erros
-import { useState } from "react";
-import type { Book } from "../services/listBooksService";
-import { deleteBook } from "../services/deleteBookService";
-import CreateBook from "./CreateBook";
-import Modal from "./Modal";
-import "../styles/modal.css";
+import { useState } from "react"
+import type { Book } from "../services/listBooksService"
+import { deleteBook } from "../services/deleteBookService"
+import CreateBook from "./CreateBook"
+import Modal from "./Modal"
+import "../styles/modal.css"
 
 interface Props {
-  open: boolean;
-  book: Book | null;
-  onClose: () => void;
-  onUpdated: () => void;
-  onDeleted: () => void;
+  open: boolean
+  book: Book | null
+  onClose: () => void
+  onUpdated: () => void
+  onDeleted: () => void
 }
 
 export default function DetailsBooksModal({
@@ -21,28 +21,28 @@ export default function DetailsBooksModal({
   onUpdated,
   onDeleted,
 }: Props) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
-  if (!book) return null;
+  if (!book) return null
 
   function handleCloseAll() {
-    setIsEditing(false);
-    setConfirmDelete(false);
-    setDeleteError(null);
-    onClose();
+    setIsEditing(false)
+    setConfirmDelete(false)
+    setDeleteError(null)
+    onClose()
   }
 
   async function handleConfirmDelete() {
-    if (!book?.id) return;
+    if (!book?.id) return
 
     try {
-      await deleteBook(book.id);
-      onDeleted();
-      handleCloseAll();
+      await deleteBook(book.id)
+      onDeleted()
+      handleCloseAll()
     } catch (err: any) {
-      setDeleteError(err.message || "Erro ao excluir o livro");
+      setDeleteError(err.message || "Erro ao excluir o livro")
     }
   }
 
@@ -52,7 +52,7 @@ export default function DetailsBooksModal({
         <>
           <header>
             <div className="back-button">
-              <span>&lt;</span>
+              <span>&lt</span>
               <button onClick={handleCloseAll}>Voltar</button>
             </div>
             <div>
@@ -91,8 +91,8 @@ export default function DetailsBooksModal({
           initialData={book}
           onCancel={handleCloseAll}
           onSuccess={() => {
-            onUpdated();
-            handleCloseAll();
+            onUpdated()
+            handleCloseAll()
           }}
           noOverlay={true}
         />
@@ -116,5 +116,5 @@ export default function DetailsBooksModal({
         </Modal>
       )}
     </Modal>
-  );
+  )
 }

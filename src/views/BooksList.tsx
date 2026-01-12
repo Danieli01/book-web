@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react";
-import { getBooks, type Book } from "../services/listBooksService";
-import DetailsBooksModal from "../components/DetailsBooksModal";
-import "../app.css";
-import Modal from "../components/Modal";
-import CreateBook from "../components/CreateBook";
+import { useEffect, useState } from "react"
+import { getBooks, type Book } from "../services/listBooksService"
+import DetailsBooksModal from "../components/DetailsBooksModal"
+import "../app.css"
+import Modal from "../components/Modal"
+import CreateBook from "../components/CreateBook"
 // ↑ USE A MESMA FUNÇÃO QUE VOCÊ JÁ USA HOJE
 
 export default function BookList() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [search, setSearch] = useState("");
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  const [openDetails, setOpenDetails] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [books, setBooks] = useState<Book[]>([])
+  const [search, setSearch] = useState("")
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
+  const [openDetails, setOpenDetails] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
 
 
 
   // 🔹 Função ÚNICA para carregar a listagem
   function loadBooks(filter?: string) {
-    getBooks({ title: filter }).then(setBooks);
+    getBooks({ title: filter }).then(setBooks)
   }
 
   // 🔹 Carga inicial (sem filtro)
   useEffect(() => {
-    loadBooks();
-  }, []);
+    loadBooks()
+  }, [])
 
   return (
     <>
@@ -37,9 +37,9 @@ export default function BookList() {
             placeholder="Buscar"
             value={search}
             onChange={e => {
-              const value = e.currentTarget.value;
-              setSearch(value);
-              loadBooks(value); // busca no backend
+              const value = e.currentTarget.value
+              setSearch(value)
+              loadBooks(value) // busca no backend
             }}
           />
 
@@ -54,8 +54,8 @@ export default function BookList() {
               key={book.id}
               className="card"
               onClick={() => {
-                setSelectedBook(book);
-                setOpenDetails(true);
+                setSelectedBook(book)
+                setOpenDetails(true)
               }}
             >
               <div className="image-container">
@@ -74,19 +74,19 @@ export default function BookList() {
           onClose={() => setOpenDetails(false)}
           onUpdated={() => loadBooks(search)}
           onDeleted={() => {
-            loadBooks(search);
-            setOpenDetails(false);
+            loadBooks(search)
+            setOpenDetails(false)
           }}
         />
         <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <CreateBook
           onSuccess={() => {
-            setOpenModal(false);
-            loadBooks(search);
+            setOpenModal(false)
+            loadBooks(search)
           }}
         />
       </Modal>
       </div>
     </>
-  );
+  )
 }

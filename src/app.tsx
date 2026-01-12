@@ -1,12 +1,12 @@
-import { useState } from "react";
-import CreateBook from "./components/CreateBook";
-import BooksList from "./views/BooksList";
-import Modal from "./components/Modal";
-import "./index.css";
+import { useState } from "react"
+import CreateBook from "./components/CreateBook"
+import BooksList from "./views/BooksList"
+import Modal from "./components/Modal"
+import "./index.css"
 
 function App() {
-  const [openModal, setOpenModal] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [openModal, setOpenModal] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   return (
     <div className="App">
@@ -29,15 +29,15 @@ function App() {
         <CreateBook
           mode="create"
           onSuccess={() => {
-            setOpenModal(false);
-            setRefreshKey((k) => k + 1);
+            setOpenModal(false)
+            setRefreshKey((k) => k + 1)
           }}
           onCancel={() => setOpenModal(false)} // ← adicionado para o botão Cancelar funcionar
           noOverlay={true} // ← ESSA LINHA resolve o problema de aninhamento de overlays
         />
       </Modal>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

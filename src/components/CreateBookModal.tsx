@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import type { Book } from "../services/listBooksService";
-import { createBook, uploadBookImage } from "../services/createBooksService";
-import { updateBook } from "../services/editBookService";
+import { useEffect, useState } from "react"
+import type { Book } from "../services/listBooksService"
+import { createBook, uploadBookImage } from "../services/createBooksService"
+import { updateBook } from "../services/editBookService"
 
 
 interface Props {
-  mode?: "create" | "edit";
-  initialData?: Book;
-  onSuccess?: () => void;
-  onCancel?: () => void;
+  mode?: "create" | "edit"
+  initialData?: Book
+  onSuccess?: () => void
+  onCancel?: () => void
 }
 
 export default function CreateBook({
@@ -17,36 +17,36 @@ export default function CreateBook({
   onSuccess,
   onCancel,
 }: Props) {
-  const isEdit = mode === "edit";
+  const isEdit = mode === "edit"
 
-  const [title, setTitle] = useState("");
-  const [authorName, setAuthorName] = useState("");
-  const [publishedDate, setPublishedDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("")
+  const [authorName, setAuthorName] = useState("")
+  const [publishedDate, setPublishedDate] = useState("")
+  const [description, setDescription] = useState("")
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | undefined>()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (isEdit && initialData) {
-      setTitle(initialData.title);
-      setAuthorName(initialData.author_name);
-      setPublishedDate(initialData.published_date.slice(0, 10));
-      setDescription(initialData.description ?? "");
-      setImageUrl(initialData.image_url);
+      setTitle(initialData.title)
+      setAuthorName(initialData.author_name)
+      setPublishedDate(initialData.published_date.slice(0, 10))
+      setDescription(initialData.description ?? "")
+      setImageUrl(initialData.image_url)
     }
-  }, [isEdit, initialData]);
+  }, [isEdit, initialData])
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    setLoading(true);
+    e.preventDefault()
+    e.stopPropagation()
+    setLoading(true)
 
     try {
-      let finalImageUrl = imageUrl;
+      let finalImageUrl = imageUrl
 
       if (imageFile) {
-        finalImageUrl = await uploadBookImage(imageFile);
+        finalImageUrl = await uploadBookImage(imageFile)
       }
 
       const payload = {
@@ -55,17 +55,17 @@ export default function CreateBook({
         published_date: new Date(publishedDate).toISOString(),
         description,
         image_url: finalImageUrl,
-      };
-
-      if (isEdit && initialData && initialData.id !== undefined) {
-        await updateBook(initialData.id, payload);
-      } else {
-        await createBook(payload);
       }
 
-      onSuccess?.();
+      if (isEdit && initialData && initialData.id !== undefined) {
+        await updateBook(initialData.id, payload)
+      } else {
+        await createBook(payload)
+      }
+
+      onSuccess?.()
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -125,5 +125,5 @@ export default function CreateBook({
         </button>
       </div>
     </form>
-  );
+  )
 }

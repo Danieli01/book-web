@@ -1,8 +1,8 @@
-import Modal from "./Modal";
+import Modal from "./Modal"
 
 interface ConfirmDeleteProps {
-  onConfirm: () => void;
-  onCancel: () => void;
+  onConfirm: () => void
+  onCancel: () => void
 }
 
 export function ConfirmDelete({ onConfirm, onCancel }: ConfirmDeleteProps) {
@@ -16,5 +16,5 @@ export function ConfirmDelete({ onConfirm, onCancel }: ConfirmDeleteProps) {
         <button onClick={onCancel}>Cancelar</button>
       </div>
     </Modal>
-  );
+  )
 }

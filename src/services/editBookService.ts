@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/books";
+const API_URL = "http://localhost:3000/books"
 
 export interface UpdateBookPayload {
     title?: string
@@ -27,10 +27,10 @@ export async function updateBook(
         
 
         body: JSON.stringify(newData),
-    });
+    })
 
     if (!response.ok) {
-        const error = await response.text();
+        const error = await response.text()
         throw new Error(error || "Erro ao editar livro")
     }
 }
