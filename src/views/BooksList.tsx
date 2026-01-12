@@ -4,7 +4,6 @@ import DetailsBooksModal from "../components/DetailsBooksModal"
 import "../app.css"
 import Modal from "../components/Modal"
 import CreateBook from "../components/CreateBook"
-// ↑ USE A MESMA FUNÇÃO QUE VOCÊ JÁ USA HOJE
 
 export default function BookList() {
   const [books, setBooks] = useState<Book[]>([])
@@ -15,12 +14,12 @@ export default function BookList() {
 
 
 
-  // 🔹 Função ÚNICA para carregar a listagem
+  // Função ÚNICA para carregar a listagem
   function loadBooks(filter?: string) {
     getBooks({ title: filter }).then(setBooks)
   }
 
-  // 🔹 Carga inicial (sem filtro)
+  // Carga inicial (sem filtro)
   useEffect(() => {
     loadBooks()
   }, [])
