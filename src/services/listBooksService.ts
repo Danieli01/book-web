@@ -9,7 +9,6 @@ export interface Book {
   image_url?: string
 }
 
-// src/services/bookService.ts
 export async function getBooks(params?: {
   page?: number
   limit?: number
