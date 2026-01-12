@@ -92,6 +92,18 @@ body {
   /* centralizar horizontalmente se quiser */
 }
 
+.btn-novo {
+  padding: 8px 16px;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
 /* Input de busca */
 .search-input {
   width: 100%;

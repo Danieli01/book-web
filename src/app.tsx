@@ -27,10 +27,13 @@ function App() {
 
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <CreateBook
+          mode="create"
           onSuccess={() => {
             setOpenModal(false);
             setRefreshKey((k) => k + 1);
           }}
+          onCancel={() => setOpenModal(false)} // ← adicionado para o botão Cancelar funcionar
+          noOverlay={true} // ← ESSA LINHA resolve o problema de aninhamento de overlays
         />
       </Modal>
     </div>
