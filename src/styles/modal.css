@@ -2,23 +2,28 @@
 Overlay do modal
 ============================= */
 .modal-overlay {
-  position: fixed;      /* fixa na tela inteira */
+  position: fixed;
+  /* fixa na tela inteira */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.5); /* fundo semi-transparente */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* fundo semi-transparente */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;        /* fica sobre tudo */
-  padding: 16px;        /* evita que modal encoste nas bordas em telas pequenas */
+  z-index: 9999;
+  /* fica sobre tudo */
+  padding: 16px;
+  /* evita que modal encoste nas bordas em telas pequenas */
   box-sizing: border-box;
 }
 
 /* =============================
 DetailsBooksModal Styles
 ============================= */
+
 .details-modal {
   display: flex;
   flex-direction: column;
@@ -31,13 +36,42 @@ DetailsBooksModal Styles
   max-width: 900px;
   width: 100%;
   box-sizing: border-box;
-  max-height: 700px;      /* evita ultrapassar a tela */
-  overflow-y: auto;      /* scroll interno se o conteúdo for grande */
-  margin: auto;          /* centraliza na tela dentro do overlay */
-  position: absolute;    /* usa absolute para sobrepor corretamente */
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, 0);
+  max-height: 700px;
+  /* evita ultrapassar a tela */
+  overflow-y: auto;
+  /* scroll interno se o conteúdo for grande */
+  margin: auto;
+  /* centraliza na tela dentro do overlay */
+  position: relative;
+  /* usa relative para manter dentro do overlay flex */
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #bbb #f3f3f3;
+  /* Firefox */
+  overscroll-behavior: contain;
+  /* Impede scroll de vazar para o body */
+}
+
+/* Barra de rolagem para Webkit (Chrome, Edge, Safari) */
+.details-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.details-modal::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+
+.details-modal::-webkit-scrollbar-track {
+  background: #f3f3f3;
+  border-radius: 4px;
+}
+
+/* Impede rolagem do body quando modal está aberto */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 /* Desfoque o fundo do overlay */
@@ -58,16 +92,26 @@ Header
   margin-bottom: 16px;
 }
 
+.details-modal header .back-button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .details-modal header button {
   background: none;
   border: none;
-  color: #007bff;
-  font-size: 14px;
+  color: black;
+  font-size: 28px;
+  font-weight: bold;
   cursor: pointer;
 }
 
 .details-modal header button.delete {
-  color: red;
+  color: black;
 }
 
 /* =============================
@@ -80,6 +124,14 @@ Conteúdo do livro
 
 .details-modal .book-text {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-line;
+  /* Remove scroll do texto */
+  overflow-y: visible;
 }
 
 .details-modal h2 {
@@ -99,7 +151,6 @@ Conteúdo do livro
 .details-modal .published-date {
   font-size: 12px;
   color: #888;
-  margin-bottom: 16px;
 }
 
 .details-modal p {
@@ -108,15 +159,38 @@ Conteúdo do livro
   text-align: justify;
 }
 
+.details-modal .author-date {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+  align-items: baseline;
+  font-size: 24px;
+  font-weight: normal;
+  color: black;
+  padding: 16px 0;
+}
+
+.details-modal .author-date span {
+  box-sizing: border-box;
+  font-weight: normal;
+  color: black;
+  padding-top: 10px;
+  font-size: 20px;
+}
+
+
 .details-modal .book-image {
   width: 200px;
   height: auto;
-  object-fit: scale-down; /* Mostra a imagem inteira sem cortar */
+  object-fit: scale-down;
+  /* Mostra a imagem inteira sem cortar */
   border-radius: 4px;
   flex-shrink: 0;
   background: #f3f3f3;
   display: block;
-  max-height: 300px; /* Limita altura para garantir que não ultrapasse */
+  max-height: 300px;
+  /* Limita altura para garantir que não ultrapasse */
 }
 
 /* =============================
@@ -143,19 +217,85 @@ Ações do modal
 }
 
 .details-modal .actions button.delete {
-  border-color: red;
-  color: red;
+  border-color: black;
+  color: black;
 }
 
 /* =============================
 Confirm delete
 ============================= */
-.details-modal .confirm-delete {
-  text-align: center;
+/* Modal de confirmação de exclusão */
+.confirm-delete-modal .modal-overlay {
+  background: rgba(0, 0, 0, 0.6);
+  /* fundo escuro mais suave */
 }
 
-.details-modal .confirm-delete p {
-  margin: 16px 0;
+.confirm-delete {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 40px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.confirm-delete h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.confirm-delete p {
+  margin: 0 0 32px 0;
+  color: #4b5563;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.confirm-delete .actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.confirm-delete button {
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 150px;
+  height: 40px;
+}
+
+.confirm-delete button:first-child {
+  /* Cancelar - cinza */
+  background: #e5e7eb;
+  color: #374151;
+  border-radius: 100px;
+  border-style: none;
+  padding: 5px 32px;
+}
+
+.confirm-delete button:first-child:hover {
+  background: #d1d5db;
+}
+
+.confirm-delete button:last-child {
+  /* Excluir - vermelho */
+  background: #ef4444;
+  color: white;
+  border-radius: 100px;
+  border-style: none;
+  padding: 5px 32px;
+}
+
+.confirm-delete button:last-child:hover {
+  background: #dc2626;
 }
 
 /* =============================
