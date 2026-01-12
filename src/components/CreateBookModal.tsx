@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Book } from "../services/listBoooksService";
+import type { Book } from "../services/listBooksService";
 import { createBook, uploadBookImage } from "../services/createBooksService";
 import { updateBook } from "../services/editBookService";
 
