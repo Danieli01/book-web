@@ -1,5 +1,7 @@
+// DetailsBooksModal.tsx - Versão definitiva com integração de delete e tratamento de erros
 import { useState } from "react";
-import type { Book } from "../services/listBoooksService";
+import type { Book } from "../services/listBooksService";
+import { deleteBook } from "../services/deleteBookService";
 import CreateBook from "./CreateBook";
 import Modal from "./Modal";
 import "../styles/modal.css";
@@ -21,18 +23,37 @@ export default function DetailsBooksModal({
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   if (!book) return null;
 
+  function handleCloseAll() {
+    setIsEditing(false);
+    setConfirmDelete(false);
+    setDeleteError(null);
+    onClose();
+  }
+
+  async function handleConfirmDelete() {
+    if (!book?.id) return;
+
+    try {
+      await deleteBook(book.id);
+      onDeleted();
+      handleCloseAll();
+    } catch (err: any) {
+      setDeleteError(err.message || "Erro ao excluir o livro");
+    }
+  }
+
   return (
-    <Modal open={open} onClose={onClose} className="details-modal">
+    <Modal open={open} onClose={handleCloseAll} className="details-modal">
       {!isEditing ? (
         <>
-          {/* Cabeçalho com Voltar / Editar / Excluir */}
           <header>
             <div className="back-button">
               <span>&lt;</span>
-              <button onClick={onClose}>Voltar</button>
+              <button onClick={handleCloseAll}>Voltar</button>
             </div>
             <div>
               <button onClick={() => setIsEditing(true)}>Editar</button>
@@ -45,15 +66,22 @@ export default function DetailsBooksModal({
           <div className="book-content">
             <div className="book-text">
               <h2>{book.title}</h2>
-              <h4>Por {book.author_name}</h4>
-              <small className="published-date">
-                {new Date(book.published_date).toLocaleDateString()}
-              </small>
+              <div className="author-date">
+                <span>Por {book.author_name}</span>
+                <span className="published-date">
+                  Publicado em{" "}
+                  {new Date(book.published_date).toLocaleDateString("pt-BR")}
+                </span>
+              </div>
               <p>{book.description}</p>
             </div>
 
             {book.image_url && (
-              <img src={book.image_url} alt={book.title} className="book-image" />
+              <img
+                src={book.image_url}
+                alt={book.title}
+                className="book-image"
+              />
             )}
           </div>
         </>
@@ -61,51 +89,28 @@ export default function DetailsBooksModal({
         <CreateBook
           mode="edit"
           initialData={book}
-          onCancel={() => {
-            setIsEditing(false);
-             onClose();           
-          }}
+          onCancel={handleCloseAll}
           onSuccess={() => {
             onUpdated();
-            onClose();
-            setIsEditing(false);
-            onClose();
-            }}
-          />
-          )}
+            handleCloseAll();
+          }}
+          noOverlay={true}
+        />
+      )}
+
       {confirmDelete && (
         <Modal
           open
-          onClose={() => {
-            setConfirmDelete(false);
-            setIsEditing(false); // Fecha o modal de edição se estiver aberto
-            onClose(); // Sempre volta para a tela principal ao fechar qualquer modal
-            setIsEditing(false); // Garante que o modo de edição seja fechado
-            }}
-            className="confirm-delete-modal"
-          >
+          onClose={handleCloseAll}
+          className="confirm-delete-modal"
+        >
           <div className="confirm-delete">
-            <h3>Confirmar exclusão</h3>
-            <p>Deseja realmente excluir este livro?</p>
+            <h3>Tem certeza?</h3>
+            <p>Ao excluir este livro não será possível recuperá-lo. Realmente deseja excluí-lo?</p>
+            {deleteError && <p className="error">{deleteError}</p>}
             <div className="actions">
-              <button
-                onClick={() => {
-                  setConfirmDelete(false);
-                  setIsEditing(false);
-                  onDeleted();
-                }}
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={() => {
-                  setConfirmDelete(false);
-                  setIsEditing(false);
-                  onClose(); // Fecha o modal de detalhes e volta para a listagem
-                }}
-              >
-                Cancelar
-              </button>
+              <button onClick={handleCloseAll}>Cancelar</button>
+              <button onClick={handleConfirmDelete}>Excluir</button>
             </div>
           </div>
         </Modal>
