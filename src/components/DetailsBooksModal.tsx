@@ -51,7 +51,10 @@ export default function DetailsBooksModal({
         <>
           <header>
             <div className="back-button">
-              <span>&lt</span>
+              <span><svg width="14" height="25" viewBox="0 0 14 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.512695 11.0182C-0.170898 11.7018 -0.170898 12.8119 0.512695 13.4955L11.0127 23.9955C11.6963 24.6791 12.8064 24.6791 13.49 23.9955C14.1736 23.3119 14.1736 22.2018 13.49 21.5182L4.22598 12.2541L13.4846 2.99004C14.1682 2.30645 14.1682 1.19629 13.4846 0.512695C12.801 -0.170898 11.6908 -0.170898 11.0072 0.512695L0.507227 11.0127L0.512695 11.0182Z" fill="black" />
+              </svg>
+              </span>
               <button onClick={handleCloseAll}>Voltar</button>
             </div>
             <div>
