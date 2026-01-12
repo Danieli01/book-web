@@ -58,7 +58,17 @@ export default function BookList() {
               }}
             >
               <div className="image-container">
-                <img className="card-image" src={book.image_url} alt={book.title} />
+                <img
+                  className="card-image"
+                  src={
+                    book.image_url?.startsWith("data:") || book.image_url?.startsWith("http")
+                      ? book.image_url
+                      : book.image_url
+                        ? `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/${book.image_url}`
+                        : "/placeholder.png"
+                  }
+                  alt={book.title}
+                />
               </div>
               <h4 className="card-title">{book.title}</h4>
               <span className="card-subtitle">{book.author_name}</span>
