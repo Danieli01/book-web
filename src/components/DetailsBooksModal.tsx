@@ -1,4 +1,3 @@
-// DetailsBooksModal.tsx - Versão definitiva com integração de delete e tratamento de erros
 import { useState } from "react"
 import type { Book } from "../services/listBooksService"
 import { deleteBook } from "../services/deleteBookService"
