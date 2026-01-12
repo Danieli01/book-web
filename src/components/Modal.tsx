@@ -1,9 +1,8 @@
-// Modal.tsx - Sem alterações, está bom
 interface ModalProps {
-  open: boolean
-  onClose: () => void
-  className?: string
-  children: React.ReactNode
+  open: boolean;
+  onClose: () => void;
+  className?: string;
+  children: React.ReactNode;
 }
 
 export default function Modal({
@@ -12,7 +11,7 @@ export default function Modal({
   className,
   children,
 }: ModalProps) {
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -23,5 +22,5 @@ export default function Modal({
         {children}
       </div>
     </div>
-  )
+  );
 }
