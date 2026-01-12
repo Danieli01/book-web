@@ -17,5 +17,5 @@ export async function uploadBookImage(file: File): Promise<string> {
 
 export async function createBook(data: any) {
   const response = await api.post("/books", data);
-  return response.data;
+  return response.data.data;
 }
