@@ -29,6 +29,6 @@ export async function getBooks(params?: {
   const res = await fetch(`${API_URL}/books?${query.toString()}`);
   if (!res.ok) throw new Error("Erro ao buscar livros");
   const data = await res.json();
-  return data.data;
+  return data.data.data;
 }
 
