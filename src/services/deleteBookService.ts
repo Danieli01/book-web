@@ -1,4 +1,3 @@
-// deleteBookService.ts - Versão definitiva com melhorias
 const API_URL = "http://localhost:3000/books"
 
 export async function deleteBook(id: number): Promise<void> {
